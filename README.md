@@ -12,3 +12,5 @@ We have implemented a highly secure RSA cryptography algorithm in a server-clien
 This is a prctical demonstration of the algorithm where every time a socket connection is set up, a new set of pubic,private keys are generated. 
 
 The bitlength can be adjusted in the code for desired level of security.
+
+This code can be used to save your passwords or other confedential data remotely to a server without any worries of it getting hacked.
