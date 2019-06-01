@@ -90,12 +90,13 @@ def generate_keypair(p, q,keysize):
     g = gcd(e, phi)
 
     #as long as gcd(1,phi(n)) is not 1, keep generating e
-    while g != 1:
+    while True:
         e = random.randrange(1, phi)
         g = gcd(e, phi)
-
-    #generate private key
-    d = mod_inverse(e, phi)
+        #generate private key
+        d = mod_inverse(e, phi)
+        if g==1 and e!=d:
+          break
 
     #public key (e,n)
     #private key (d,n)
