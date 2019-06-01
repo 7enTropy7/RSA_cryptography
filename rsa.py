@@ -1,6 +1,4 @@
 """Simple RSA demonstration"""
-from __future__ import unicode_literals
-#how are you? - the question mark generates a utf-8 charset conversion error otherwise
 from math import sqrt
 #required for the sqrt() function, if you want to avoid doing **0.5
 import random
@@ -77,7 +75,7 @@ def generate_keypair(p, q,keysize):
         if q_values:
             q = random.choice(q_values)
             break
-
+    print(p,q)
     n = p * q
     phi = (p - 1) * (q - 1)
 
@@ -86,12 +84,13 @@ def generate_keypair(p, q,keysize):
     g = gcd(e, phi)
 
     #as long as gcd(1,phi(n)) is not 1, keep generating e
-    while g != 1:
+    while True:
         e = random.randrange(1, phi)
         g = gcd(e, phi)
-
-    #generate private key
-    d = mod_inverse(e, phi)
+        #generate private key
+        d = mod_inverse(e, phi)
+        if g==1 and e!=d:
+          break
 
     #public key (e,n)
     #private key (d,n)
@@ -118,9 +117,10 @@ def decrypt(msg_ciphertext, package):
 #-------------------------------------------------------------
 #driver program
 if __name__ == "__main__":
+    bit_length=int(input("Enter bit_length: "))
     print("Running RSA...")
     print("Generating public/private keypair...")
-    public, private = generate_keypair(p, q, 16) # 8 is the keysize (bit-length) value.
+    public, private = generate_keypair(p, q, 2**bit_length) # 8 is the keysize (bit-length) value.
     print("Public Key: ", public)
     print("Private Key: ", private)
     msg = input("Write msg: ")
