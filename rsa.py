@@ -1,4 +1,6 @@
 """Simple RSA demonstration"""
+from __future__ import unicode_literals
+#how are you? - the question mark generates a utf-8 charset conversion error otherwise
 from math import sqrt
 #required for the sqrt() function, if you want to avoid doing **0.5
 import random
@@ -39,20 +41,19 @@ p = rand(1, 1000)
 q = rand(1, 1000)
 
 
-def generate_keypair(p, q,keysize):
+def generate_keypair(p, q, keysize):
     # keysize is the bit length of n so it must be in range(nMin,nMax+1).
     # << is bitwise operator
     # x << y is same as multiplying x by 2**y
     # i am doing this so that p and q values have similar bit-length.
     # this will generate an n value that's hard to factorize into p and q.
 
-
-    nMin = 1<<(keysize-1)
-    nMax = (1<<keysize) - 1
-    primes=[2]
+    nMin = 1 << (keysize - 1)
+    nMax = (1 << keysize) - 1
+    primes = [2]
     # we choose two prime numbers in range(start, stop) so that the difference of bit lengths is at most 2.
-    start = 1<<(keysize//2-1)
-    stop = 1<<(keysize//2+1)
+    start = 1 << (keysize // 2 - 1)
+    stop = 1 << (keysize // 2 + 1)
 
     if start >= stop:
         return []
@@ -64,7 +65,7 @@ def generate_keypair(p, q,keysize):
         else:
             primes.append(i)
 
-    while(primes and primes[0] < start):
+    while (primes and primes[0] < start):
         del primes[0]
 
     #choosing p and q from the generated prime numbers.
@@ -75,7 +76,7 @@ def generate_keypair(p, q,keysize):
         if q_values:
             q = random.choice(q_values)
             break
-    print(p,q)
+    print(p, q)
     n = p * q
     phi = (p - 1) * (q - 1)
 
@@ -83,14 +84,14 @@ def generate_keypair(p, q,keysize):
     e = random.randrange(1, phi)
     g = gcd(e, phi)
 
-    #as long as gcd(1,phi(n)) is not 1, keep generating e
     while True:
+        #as long as gcd(1,phi(n)) is not 1, keep generating e
         e = random.randrange(1, phi)
         g = gcd(e, phi)
         #generate private key
         d = mod_inverse(e, phi)
-        if g==1 and e!=d:
-          break
+        if g == 1 and e != d:
+            break
 
     #public key (e,n)
     #private key (d,n)
@@ -117,10 +118,11 @@ def decrypt(msg_ciphertext, package):
 #-------------------------------------------------------------
 #driver program
 if __name__ == "__main__":
-    bit_length=int(input("Enter bit_length: "))
+    bit_length = int(input("Enter bit_length: "))
     print("Running RSA...")
     print("Generating public/private keypair...")
-    public, private = generate_keypair(p, q, 2**bit_length) # 8 is the keysize (bit-length) value.
+    public, private = generate_keypair(
+        p, q, 2**bit_length)  # 8 is the keysize (bit-length) value.
     print("Public Key: ", public)
     print("Private Key: ", private)
     msg = input("Write msg: ")
