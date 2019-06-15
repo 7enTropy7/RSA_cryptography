@@ -1,6 +1,4 @@
 """Simple RSA demonstration"""
-from __future__ import unicode_literals
-#how are you? - the question mark generates a utf-8 charset conversion error otherwise
 from math import sqrt
 #required for the sqrt() function, if you want to avoid doing **0.5
 import random
