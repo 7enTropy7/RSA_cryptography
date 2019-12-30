@@ -6,7 +6,7 @@ This project is in collaboration with [Awnon Bhowmik](https://github.com/awnonbh
 
 ### Code Sample
 
-'''
+'''python
 >>> import RSA_module
 >>> bit_length = int(input("Enter bit_length: "))
 Enter bit_length: 4
