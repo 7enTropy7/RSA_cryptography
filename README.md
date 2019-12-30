@@ -4,7 +4,7 @@
 
 Created in collaboration with [Awnon Bhowmik](https://github.com/awnonbhowmik)
 
-We have implemented a highly secure RSA encryption algorithm in a server-client socket framework. The client's messages are encrypted on their local machine using a public key and the encrypted data flows to the server where it is decrypted using the generated private key. This code can be used to save your passwords or other confedential data remotely to a server without any worries of it getting hacked.
+A highly secure RSA encryption algorithm in a server-client socket framework. The client's messages are encrypted on their local machine using a public key and the encrypted data flows to the server where it is decrypted using the generated private key. This code can be used to save your passwords or other confedential data remotely to a server without any worries of it getting hacked.
 
 This is a practical demonstration of the algorithm where every time a socket connection is set up, a new set of pubic,private keys are generated. 
 
@@ -36,7 +36,7 @@ Encrypted msg: 1283254245233922667063899175674025153412832
 Decrypted msg: 7enTropy7 
 ```
 
-## Output
+## Demo
 
 ![ezgif com-video-to-gif (5)](https://user-images.githubusercontent.com/36446402/71583455-83ef1900-2b34-11ea-92e5-848509d2d705.gif)
 
