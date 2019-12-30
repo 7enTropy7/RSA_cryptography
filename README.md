@@ -46,3 +46,7 @@ This code can be used to save your passwords or other confedential data remotely
 
 * [**Unnikrishnan Menon**](https://github.com/7enTropy7)
 * [**Awnon Bhowmik**](https://github.com/awnonbhowmik)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
