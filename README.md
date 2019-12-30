@@ -6,22 +6,28 @@ This project is in collaboration with [Awnon Bhowmik](https://github.com/awnonbh
 
 ### Code Sample
 
-'''python
+```python
 >>> import RSA_module
+
 >>> bit_length = int(input("Enter bit_length: "))
 Enter bit_length: 4
+
 >>> public, private = RSA_module.generate_keypair(2**bit_length)
 467 137
+
 >>> msg = input("Write msg: ")
 Write msg: 7enTropy7
+
 >>> encrypted_msg, encryption_obj = RSA_module.encrypt(msg, public)
+
 >>> print("Encrypted msg: " + encrypted_msg)
 Encrypted msg: 1283254245233922667063899175674025153412832
+
 >>> decrypted_msg = RSA_module.decrypt(encryption_obj, private)
+
 >>> print("Decrypted msg: " + decrypted_msg)
-Decrypted msg: 7enTropy7
->>> 
-'''
+Decrypted msg: 7enTropy7 
+```
 
 
 ![Screenshot from 2019-05-31 04-10-03](https://user-images.githubusercontent.com/36446402/58669503-15599b00-835a-11e9-8dee-2eebd99b79b3.png)
