@@ -2,7 +2,7 @@
 
 # RSA_cryptography
 
-This project is in collaboration with [Awnon Bhowmik](https://github.com/awnonbhowmik)
+Created in collaboration with [Awnon Bhowmik](https://github.com/awnonbhowmik)
 
 ### Code Sample
 
