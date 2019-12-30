@@ -38,8 +38,7 @@ Decrypted msg: 7enTropy7
 
 ## Output
 
-![Screenshot from 2019-05-31 04-10-03](https://user-images.githubusercontent.com/36446402/58669503-15599b00-835a-11e9-8dee-2eebd99b79b3.png)
-
+![ezgif com-video-to-gif (5)](https://user-images.githubusercontent.com/36446402/71583455-83ef1900-2b34-11ea-92e5-848509d2d705.gif)
 
 
 ## Authors
