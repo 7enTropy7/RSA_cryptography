@@ -41,3 +41,8 @@ This is a practical demonstration of the algorithm where every time a socket con
 The bitlength can be adjusted in the code for desired level of security.
 
 This code can be used to save your passwords or other confedential data remotely to a server without any worries of it getting hacked.
+
+## Authors
+
+* [**Unnikrishnan Menon**](https://github.com/7enTropy7)
+* [**Awnon Bhowmik**](https://github.com/awnonbhowmik)
