@@ -45,8 +45,9 @@ Decrypted msg: 7enTropy7
 
 ## Authors
 
-* [**Unnikrishnan Menon**](https://github.com/7enTropy7)
 * [**Awnon Bhowmik**](https://github.com/awnonbhowmik)
+* [**Unnikrishnan Menon**](https://github.com/7enTropy7)
+
 
 ## License
 
