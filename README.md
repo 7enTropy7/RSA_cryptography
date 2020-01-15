@@ -10,6 +10,10 @@ This is a practical demonstration of the algorithm where every time a socket con
 
 The bitlength can be adjusted in the code for desired level of security.
 
+### Cloning
+```bash
+$ git clone https://github.com/7enTropy7/RSA_cryptography.git
+```
 
 ### Code Sample
 
