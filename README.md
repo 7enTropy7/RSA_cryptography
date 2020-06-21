@@ -37,7 +37,7 @@ Decrypted Message: 7enTropy7
 
 ## Demo
 
-![ezgif com-video-to-gif (5)](https://user-images.githubusercontent.com/36446402/71583455-83ef1900-2b34-11ea-92e5-848509d2d705.gif)
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/36446402/85234950-d13aac00-b42e-11ea-9f17-4308a2382c35.gif)
 
 
 ## Authors
