@@ -2,6 +2,9 @@ from __future__ import unicode_literals
 from math import sqrt
 import random
 from random import randint as rand
+import sympy
+import time
+import binascii
 
 def gcd(a, b):
     if b == 0:
@@ -9,11 +12,20 @@ def gcd(a, b):
     else:
         return gcd(b, a % b)
 
+def egcd(a, b):
+    x,y, u,v = 0,1, 1,0
+    while a != 0:
+        q, r = b//a, b%a
+        m, n = x-u*q, y-v*q
+        b,a, x,y, u,v = a,r, u,v, m,n
+    return b, x, y
+
 def mod_inverse(a, m):
-    for x in range(1, m):
-        if (a * x) % m == 1:
-            return x
-    return -1
+    g, x, y = egcd(a, m)
+    if g != 1:
+        return None  
+    else:
+        return x % m
 
 def isprime(n):
     if n < 2:
@@ -26,51 +38,34 @@ def isprime(n):
                 return False
     return True
 
+def generate_prime(bitlength):
+    a = '1'+'0'*(bitlength-1)
+    b = '1'*bitlength
+
+    p = sympy.randprime(int(a, 2), int(b, 2))
+    return p
+
 def generate_keypair(keysize):
-    p = rand(1, 1000)
-    q = rand(1, 1000)
-    nMin = 1 << (keysize - 1)
-    nMax = (1 << keysize) - 1
-    primes = [2]
-    start = 1 << (keysize // 2 - 1)
-    stop = 1 << (keysize // 2 + 1)
-    if start >= stop:
-        return []
-    for i in range(3, stop + 1, 2):
-        for p in primes:
-            if i % p == 0:
-                break
-        else:
-            primes.append(i)
-    while (primes and primes[0] < start):
-        del primes[0]
-    while primes:
-        p = random.choice(primes)
-        primes.remove(p)
-        q_values = [q for q in primes if nMin <= p * q <= nMax]
-        if q_values:
-            q = random.choice(q_values)
-            break
-    print(p, q)
+    p = generate_prime(keysize)
+    q = generate_prime(keysize)
+    # print(p, q)
     n = p * q
-    phi = (p - 1) * (q - 1)
-    e = random.randrange(1, phi)
-    g = gcd(e, phi)
-    while True:
-        e = random.randrange(1, phi)
-        g = gcd(e, phi)
-        d = mod_inverse(e, phi)
-        if g == 1 and e != d:
-            break
+    phi = (p-1)*(q-1)//gcd(p-1, q-1)
+    e = sympy.randprime(1,phi)
+    d = mod_inverse(e,phi)
+    if e != d:
+        return ((e, n), (d, n))  
 
-    return ((e, n), (d, n))
-
-def encrypt(msg_plaintext, package):
+def encrypt(msg, package):
+    hex_data   = binascii.hexlify(msg.encode())
+    plain_text = int(hex_data, 16)
     e, n = package
-    msg_ciphertext = [pow(ord(c), e, n) for c in msg_plaintext]
-    return ''.join(map(lambda x: str(x), msg_ciphertext)), msg_ciphertext
+    if plain_text > n:
+        print('Message is too large for key to handle')
+    msg_ciphertext = pow(plain_text, e, n)
+    return msg_ciphertext
 
 def decrypt(msg_ciphertext, package):
     d, n = package
-    msg_plaintext = [chr(pow(c, d, n)) for c in msg_ciphertext]
-    return (''.join(msg_plaintext))
+    msg_plaintext = pow(msg_ciphertext, d, n)
+    return binascii.unhexlify(hex(msg_plaintext)[2:]).decode()
