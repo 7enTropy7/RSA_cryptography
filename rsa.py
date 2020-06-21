@@ -1,12 +1,11 @@
-"""Simple RSA demonstration"""
+from __future__ import unicode_literals
 from math import sqrt
-#required for the sqrt() function, if you want to avoid doing **0.5
 import random
-#required for randrange
 from random import randint as rand
-
-#just to use the well known keyword rand() from C++
-
+from random import getrandbits
+import sympy
+import time
+import binascii
 
 def gcd(a, b):
     if b == 0:
@@ -14,13 +13,20 @@ def gcd(a, b):
     else:
         return gcd(b, a % b)
 
+def egcd(a, b):
+    x,y, u,v = 0,1, 1,0
+    while a != 0:
+        q, r = b//a, b%a
+        m, n = x-u*q, y-v*q
+        b,a, x,y, u,v = a,r, u,v, m,n
+    return b, x, y
 
 def mod_inverse(a, m):
-    for x in range(1, m):
-        if (a * x) % m == 1:
-            return x
-    return -1
-
+    g, x, y = egcd(a, m)
+    if g != 1:
+        return None  
+    else:
+        return x % m
 
 def isprime(n):
     if n < 2:
@@ -34,99 +40,53 @@ def isprime(n):
     return True
 
 
-#initial two random numbers p,q
-p = rand(1, 1000)
-q = rand(1, 1000)
+def generate_prime(bitlength):
+    a = '1'+'0'*(bitlength-1)
+    b = '1'*bitlength
+
+    p = sympy.randprime(int(a, 2), int(b, 2))
+    return p
 
 
-def generate_keypair(p, q, keysize):
-    # keysize is the bit length of n so it must be in range(nMin,nMax+1).
-    # << is bitwise operator
-    # x << y is same as multiplying x by 2**y
-    # i am doing this so that p and q values have similar bit-length.
-    # this will generate an n value that's hard to factorize into p and q.
-
-    nMin = 1 << (keysize - 1)
-    nMax = (1 << keysize) - 1
-    primes = [2]
-    # we choose two prime numbers in range(start, stop) so that the difference of bit lengths is at most 2.
-    start = 1 << (keysize // 2 - 1)
-    stop = 1 << (keysize // 2 + 1)
-
-    if start >= stop:
-        return []
-
-    for i in range(3, stop + 1, 2):
-        for p in primes:
-            if i % p == 0:
-                break
-        else:
-            primes.append(i)
-
-    while (primes and primes[0] < start):
-        del primes[0]
-
-    #choosing p and q from the generated prime numbers.
-    while primes:
-        p = random.choice(primes)
-        primes.remove(p)
-        q_values = [q for q in primes if nMin <= p * q <= nMax]
-        if q_values:
-            q = random.choice(q_values)
-            break
+def generate_keypair(keysize):
+    p = generate_prime(keysize)
+    q = generate_prime(keysize)
     print(p, q)
     n = p * q
-    phi = (p - 1) * (q - 1)
-
-    #generate public key 1<e<phi(n)
-    e = random.randrange(1, phi)
-    g = gcd(e, phi)
-
-    while True:
-        #as long as gcd(1,phi(n)) is not 1, keep generating e
-        e = random.randrange(1, phi)
-        g = gcd(e, phi)
-        #generate private key
-        d = mod_inverse(e, phi)
-        if g == 1 and e != d:
-            break
-
-    #public key (e,n)
-    #private key (d,n)
-
-    return ((e, n), (d, n))
+    phi = (p-1)*(q-1)//gcd(p-1, q-1)
+    e = sympy.randprime(1,phi)
+    d = mod_inverse(e,phi)
+    if e != d:
+        return ((e, n), (d, n))  
 
 
-def encrypt(msg_plaintext, package):
-    #unpack key value pair
+def encrypt(plain_text, package):
     e, n = package
-    msg_ciphertext = [pow(ord(c), e, n) for c in msg_plaintext]
+    if plain_text > n:
+        print('Message is too large for key to handle')
+    msg_ciphertext = pow(plain_text, e, n)
     return msg_ciphertext
 
 
 def decrypt(msg_ciphertext, package):
     d, n = package
-    msg_plaintext = [chr(pow(c, d, n)) for c in msg_ciphertext]
-    # No need to use ord() since c is now a number
-    # After decryption, we cast it back to character
-    # to be joined in a string for the final result
-    return (''.join(msg_plaintext))
+    msg_plaintext = pow(msg_ciphertext, d, n)
+    return binascii.unhexlify(hex(msg_plaintext)[2:]).decode()
 
 
-#-------------------------------------------------------------
-#driver program
-if __name__ == "__main__":
-    bit_length = int(input("Enter bit_length: "))
-    print("Running RSA...")
-    print("Generating public/private keypair...")
-    public, private = generate_keypair(
-        p, q, 2**bit_length)  # 8 is the keysize (bit-length) value.
-    print("Public Key: ", public)
-    print("Private Key: ", private)
-    msg = input("Write msg: ")
-    print([ord(c) for c in msg])
-    encrypted_msg = encrypt(msg, public)
-    print("Encrypted msg: ")
-    print(''.join(map(lambda x: str(x), encrypted_msg)))
-    print("Decrypted msg: ")
-    print(decrypt(encrypted_msg, private))
+public, private = generate_keypair(1024)
+print('Public Key : ',public)
+print('Private Key : ',private)
+
+msg = input("Write msg: ")
+
+hex_data   = binascii.hexlify(msg.encode())
+plain_text = int(hex_data, 16)
+
+t1 = time.time()
+encrypted_msg = encrypt(plain_text, public)
+print("Encrypted msg: " + str(encrypted_msg))
+
+decrypted_msg = decrypt(encrypted_msg, private)
+print("Decrypted msg: " + str(decrypted_msg))
+print('Runtime : ' + str(time.time()-t1) + ' seconds')
