@@ -22,25 +22,17 @@ $ git clone https://github.com/7enTropy7/RSA_cryptography.git
 
 ```python
 >>> import RSA_module
-
->>> bit_length = int(input("Enter bit_length: "))
-Enter bit_length: 4
-
->>> public, private = RSA_module.generate_keypair(2**bit_length)
-467 137
-
->>> msg = input("Write msg: ")
-Write msg: 7enTropy7
-
->>> encrypted_msg, encryption_obj = RSA_module.encrypt(msg, public)
-
->>> print("Encrypted msg: " + encrypted_msg)
-Encrypted msg: 1283254245233922667063899175674025153412832
-
->>> decrypted_msg = RSA_module.decrypt(encryption_obj, private)
-
->>> print("Decrypted msg: " + decrypted_msg)
-Decrypted msg: 7enTropy7 
+>>> bit_length = int(input("Enter Key Bit Length: "))
+Enter Key Bit Length: 1024
+>>> public, private = RSA_module.generate_keypair(bit_length)
+>>> message = input("Enter Message: ")
+Enter Message: 7enTropy7
+>>> encrypted_message = RSA_module.encrypt(message, public)
+>>> print("Encrypted Message: " + str(encrypted_message))
+Encrypted Message: 15265520901766789045681821545868814376034703004383283443858782335831692583624841127618802095957607414846339799319016643181426238377954590430133852776014166473337703808061712357365793532850449253596609746717723715826478629963238513449654688284273913580466488150526170074492903279628975500904790880507264769413812987862364065420843896587486170279995843645589072737241019492706185515894078178687579161346045505997146456404050994229530060933825840964628721270923724893699880274492327619878941454150688381245180274990914412874752642685781597650532546075691196520692434858059474375046663710136885218137715696877410011081033
+>>> decrypted_message = RSA_module.decrypt(encrypted_message, private)
+>>> print("Decrypted Message: " + str(decrypted_message))
+Decrypted Message: 7enTropy7 
 ```
 
 ## Demo
